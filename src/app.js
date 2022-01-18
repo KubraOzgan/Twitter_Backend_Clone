@@ -21,7 +21,7 @@ app.listen(process.env.APP_PORT, () => {
     console.log(`Application is running on ${process.env.APP_PORT}`);
     app.use("/users", UserRoutes);
     app.use("/tweets", TweetRoutes);
-    }) */
+    })
 
 });
 

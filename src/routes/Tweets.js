@@ -2,7 +2,6 @@ const express = require("express");
 const Tweets = require("../controllers/Tweets");
 const schemas = require("../validations/Tweets");
 const Middlewares = require("../middlewares/Middlewares");
-const { uploadsTweet } = require("../middlewares/FileUpload");
 
 const router = express.Router();
 

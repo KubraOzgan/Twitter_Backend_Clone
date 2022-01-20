@@ -7,5 +7,5 @@ const router = express.Router();
 
 router.route("/").post(Middlewares.authenticateUser, Middlewares.validate(schemas.createTweet, "body"), Tweets.create);
 router.route("/").get(Tweets.list);
- 
+
 module.exports = router;

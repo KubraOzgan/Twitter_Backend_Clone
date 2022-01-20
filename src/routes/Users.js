@@ -16,5 +16,6 @@ router.route("/:id/add-photo").post(Middlewares.authenticateUser, Users.addProfi
 
 router.route("/reset-password").post(Middlewares.validate(schemas.resetPassword, "body"), Users.resetPassword);
 
+router.route("/:id/follow").post(Middlewares.validate(schemas.followUser, "body"), Users.followSomeone);
 
 module.exports = router;

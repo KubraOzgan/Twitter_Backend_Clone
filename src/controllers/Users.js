@@ -82,7 +82,7 @@ class UserController {
 
     addProfilePhoto = (req, res) => { 
        /*  if(!req.params.id) 
-            return res.status(httpStatus.BAD_REQUEST).send({ message: "Missing information!"}); */
+            return res.status(httpStatus.BAD_REQUEST).send({ message: "Missing information!"}); */ 
         UserService.findOne({ _id: req.params.id })
             .then((user) => {
                 if(!user) res.status(httpStatus.NOT_FOUND).send({ message: "Not found!" }); 

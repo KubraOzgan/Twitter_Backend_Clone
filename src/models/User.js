@@ -21,12 +21,18 @@ const UserSchema = Mongoose.Schema (
         bio: String,
         profile_photo: String,
         follow: [{
-            type: Mongoose.Types.ObjectId,
-            ref: "user"
+            follow_user: String,
+            user_id: {
+                type: Mongoose.Types.ObjectId,
+                ref: "user"
+            }
         }],
         followers: [{
-            type: Mongoose.Types.ObjectId,
-            ref: "user"
+            follower_user: String,
+            user_id: {
+                type: Mongoose.Types.ObjectId,
+                ref: "user"
+            }
         }]
     },
     { timestamps: true, versionKey: false }

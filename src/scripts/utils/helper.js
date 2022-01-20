@@ -14,14 +14,14 @@ const generateJWTRefreshToken = (user) => {
     return JWT.sign({ name: user.email, ...user }, process.env.REFRESH_TOKEN_SECRET_KEY);
 };
 
-const checkSecureFileProfile = (mimeType) => {
+/* const checkSecureFileProfile = (mimeType) => {
     return mimeType.includes("image/");
-};
+}; */
 
 
 module.exports = {
     passwordToHash,
     generateJWTAccessToken,
     generateJWTRefreshToken,
-    checkSecureFileProfile,
+    //checkSecureFileProfile,
 };

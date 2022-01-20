@@ -53,10 +53,15 @@ const deleteUser = Joi.object({
     email: Joi.string().email().required().min(8),
 });
 
+const followUser = Joi.object({
+    follow_user: Joi.string().required(),
+})
+
 module.exports = {
     createUser,
     updateUser,
     userLogin,
     resetPassword,
-    deleteUser
+    deleteUser,
+    followUser
 }

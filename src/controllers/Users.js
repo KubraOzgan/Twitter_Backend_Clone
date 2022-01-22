@@ -138,7 +138,7 @@ class UserController {
                                 follower_user:user.user_name,
                                 user_id: req.params.id
                             }; 
-                            let found = user.follow.some( a => a.follow_user === req.body.follow_user);
+                            let found = user.follow.some( account => account.follow_user === req.body.follow_user);
                             if(found) {
                                 res.status(httpStatus.BAD_REQUEST).send({message: "Already following"});
                             }
@@ -170,16 +170,11 @@ class UserController {
                     UserService.findOne({ user_name: req.body.follow_user })
                         .then((followUser) => {
                             if(!followUser) res.status(httpStatus.NOT_FOUND).send({ message: "User not found!" });
-                            const follow_user = {
-                                ...req.body,
-                                user_id: followUser._id
-                            };
-                            
                              const follower_user = {
                                 follower_user:user.user_name,
                                 user_id: req.params.id
                             }; 
-                            let found = user.follow.some( a => a.follow_user === req.body.follow_user);
+                            let found = user.follow.some( account => account.follow_user === req.body.follow_user);
                             if(found) {
                                 user.follow = user.follow.filter(item => item.follow_user !== req.body.follow_user)
                                 UserService.update(req.params.id, user)

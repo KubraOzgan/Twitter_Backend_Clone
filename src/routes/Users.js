@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.route("/").post(Middlewares.validate(schemas.createUser, "body"), Users.create);
 router.route("/").get(Users.list);
+router.route("/:id").get(Users.findUser);
 
 router.route("/login").post(Middlewares.validate(schemas.userLogin, "body"), Users.login);
 
@@ -17,5 +18,6 @@ router.route("/:id/add-photo").post(Middlewares.authenticateUser, Users.addProfi
 router.route("/reset-password").post(Middlewares.validate(schemas.resetPassword, "body"), Users.resetPassword);
 
 router.route("/:id/follow").post(Middlewares.validate(schemas.followUser, "body"), Users.followSomeone);
+router.route("/:id/unfollow").post(Middlewares.validate(schemas.unfollowUser, "body"), Users.unfollowSomeone);
 
 module.exports = router;

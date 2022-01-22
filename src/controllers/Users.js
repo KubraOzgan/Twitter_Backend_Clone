@@ -59,7 +59,16 @@ class UserController {
         UserService.delete(req.params.id)
             .then((deleteUser) => {
                 if(!deleteUser) return res.status(httpStatus.NOT_FOUND).send({ message: "Not found!"});
-                res.status(httpStatus.OK).send(`Delete user with id: ${ req.params.id}, username: ${ req.params.user_name}`);
+                res.status(httpStatus.OK).send(`Delete user with id: ${ req.params.id}, username: ${ deleteUser.user_name}`);
+            })
+            .catch((e) => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e));
+    };
+
+    findUser = (req, res) => {
+        UserService.findOne({ _id: req.params.id })
+            .then((user) => {
+                if(!user) res.status(httpStatus.NOT_FOUND).send({ message: "User not found!"});
+                res.status(httpStatus.OK).send(user);
             })
             .catch((e) => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e));
     };
@@ -130,7 +139,6 @@ class UserController {
                                 user_id: req.params.id
                             }; 
                             let found = user.follow.some( a => a.follow_user === req.body.follow_user);
-                            console.log(found);
                             if(found) {
                                 res.status(httpStatus.BAD_REQUEST).send({message: "Already following"});
                             }
@@ -153,6 +161,48 @@ class UserController {
             })
             .catch((e) => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e));
     };
+
+    unfollowSomeone = (req, res) => {
+        UserService.findOne({ _id: req.params.id })
+            .then((user) => {
+                if(!user) res.status(httpStatus.NOT_FOUND).send({ message: "Not found!" });
+                
+                    UserService.findOne({ user_name: req.body.follow_user })
+                        .then((followUser) => {
+                            if(!followUser) res.status(httpStatus.NOT_FOUND).send({ message: "User not found!" });
+                            const follow_user = {
+                                ...req.body,
+                                user_id: followUser._id
+                            };
+                            
+                             const follower_user = {
+                                follower_user:user.user_name,
+                                user_id: req.params.id
+                            }; 
+                            let found = user.follow.some( a => a.follow_user === req.body.follow_user);
+                            if(found) {
+                                user.follow = user.follow.filter(item => item.follow_user !== req.body.follow_user)
+                                UserService.update(req.params.id, user)
+                                    .then((updatedUser) => {
+                                        res.status(httpStatus.OK).send(updatedUser);
+                                    })
+                                
+                                followUser.followers = followUser.followers.filter(item => item.follower_user !== follower_user.follower_user)
+                                UserService.updateWhere({ user_name: req.body.follow_user }, followUser)
+                                    .then((updatedUser) => {
+                                        res.end(updatedUser);
+                                    })
+                            }
+                            else
+                            {
+                                res.status(httpStatus.BAD_REQUEST).send({message: "Not following"});
+                            }
+                        })
+                
+            })
+            .catch((e) => res.status(httpStatus.INTERNAL_SERVER_ERROR).send(e));
+    };
+    
     
 }
 
